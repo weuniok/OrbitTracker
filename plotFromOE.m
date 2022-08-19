@@ -55,7 +55,11 @@ X = X * earthR;
 Y = Y * earthR;
 Z = Z * earthR;
 surf(X,Y,Z, 'DisplayName', 'Earth'); 
-
+% Equatorial plane
+maxR = max(abs(R), [], 'all');
+[x, y] = meshgrid(-maxR:maxR:maxR);
+z = zeros(size(x,1));
+surf(x,y,z, 'FaceAlpha', 0.2, 'DisplayName', 'Equatorial plane');
 % plotting the orbit
 plot3(R(1,:), R(2,:), R(3,:), 'DisplayName', 'Orbit'); % rotated orbit
 % plot3(R2(1,:), R2(2,:), R2(3,:)); % rotated orbit
@@ -68,11 +72,7 @@ plot3(apsePoints(1,:), apsePoints(2,:), apsePoints(3,:), 'o--k', 'MarkerFaceColo
 
 % Node line
 
-% Equatorial plane
-maxR = max(abs(R), [], 'all');
-[x, y] = meshgrid(-maxR:maxR:maxR);
-z = zeros(size(x,1));
-surf(x,y,z, 'FaceAlpha', 0.2, 'DisplayName', 'Equatorial plane');
+
 % Initial state
 plot3(r(1), r(2), r(3), 'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Initial state')
 % Axes
