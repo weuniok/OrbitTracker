@@ -1,7 +1,8 @@
-function orbitalElements = Alg41 (r, v, mu)
-% orbital elements from state vector
-% rVec = [x y z]
-% vVec = [vx vy vz]
+function orbitalElements = state2orbitalElements (r, v, mu)
+% returns orbital elements from the state vector
+% r = [x y z]
+% v = [vx vy vz]
+
 
 % Distance
 rNorm = norm(r);
