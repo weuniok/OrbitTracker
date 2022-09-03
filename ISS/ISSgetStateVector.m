@@ -1,12 +1,28 @@
-function orbitPlot = plotFromOE (orbitalElements, mu, r)
-% plots the orbit from orbirtal elements vector
-% orbitalElements:
-% (1) hNorm = specific angular momentum
-% (2) i = inclination
-% (3) omega = RA of ascending node
-% (4) eNorm = eccentricity
-% (5) w = perigee argument
-% (6) theta = true anomaly
+function [r,v] = ISSgetStateVector (anomaly)
+% returns state vector of ISS orbit from the following TLE
+
+% 1 25544U 98067A   22246.67365757  .00002926  00000-0  59194-4 0  9993
+% 2 25544  51.6442 307.7584 0002851 188.8255 322.7546 15.50015618357355
+
+% Epoch (UTC):	03 September 2022 16:10:04
+% Eccentricity:	0.0002851
+% inclination:	51.6442°
+% perigee height:	415 km
+% apogee height:	418 km
+% right ascension of ascending node:	307.7584°
+% argument of perigee:	188.8255°
+% revolutions per day:	15.50015618
+% mean anomaly at epoch:	322.7546°
+% orbit number at epoch:	35735
+deg = pi/180;
+
+secondLine = [2 25544  51.6442 307.7584 0002851 188.8255 322.7546 15.50015618357355];
+inclination = secondLine(3) * deg;
+RAofAscendingNode = secondLine(4) * deg;
+eccentricity = secondLine(5);
+perigeeArgument = secondLine(6) * deg;
+
+
 h = orbitalElements(1);
 i = orbitalElements(2);
 omega = orbitalElements(3);
