@@ -13,39 +13,24 @@ omega = orbitalElements(3);
 e = orbitalElements(4);
 w = orbitalElements(5);
 
-%radii
 % perigee
 rp = h^2/mu * 1/(1+e*cos(0));
-%apogee
+% apogee
 ra = h^2/mu * 1/(1+e*cos(pi));
 
-ra = -ra;
-rp = -rp;
-
-% semimajor axis
-a = 0.5 * (rp + ra);
-% period
-T = 2 * pi / sqrt(mu) * a^1.5;
-
-% start plot at X, then transform
-t = linspace(0, 2*pi);
-b = a * sqrt(1-e^2);
-
-X = a * cos(t);
-Y = b * sin(t);
-Z = a * 0;
-
-x = (-rp+ra)/2 + X;
-y = Y; 
-z = X*0;
+% perifocal r
+theta = linspace(0, 2*pi);
+R = h^2/mu * 1 ./ (1+ e*cos(theta)) .* [cos(theta); sin(theta); zeros(1, length(theta))];
 
 rotation = ...
     [cos(w) sin(w) 0; -sin(w) cos(w) 0; 0 0 1] * ...
     [1 0 0; 0 cos(i) sin(i); 0 -sin(i) cos(i)] * ...
     [cos(omega) sin(omega) 0; -sin(omega) cos(omega) 0; 0 0 1];
 
-R = rotation.' * [x;y;z];
+% geocentric R
+R = rotation.' * R;
 
+%% plotting
 hold on
 % plotting Earth
 earthR = 6371; %km
@@ -60,11 +45,10 @@ maxR = max(abs(R), [], 'all');
 z = zeros(size(x,1));
 surf(x,y,z, 'FaceAlpha', 0.2, 'DisplayName', 'Equatorial plane');
 % plotting the orbit
-plot3(R(1,:), R(2,:), R(3,:), 'DisplayName', 'Orbit'); % rotated orbit
-% plot3(R2(1,:), R2(2,:), R2(3,:)); % rotated orbit
+plot3(R(1,:), R(2,:), R(3,:), 'DisplayName', 'Orbit'); 
 
 % Apse line
-apsePoints = [ [-rp; 0; 0], [0; 0; 0], [ra; 0; 0] ];
+apsePoints = [ [rp*cos(0); 0; 0], [0; 0; 0], [ra*cos(pi); 0; 0] ];
 apsePoints = rotation.' * apsePoints;
 plot3(apsePoints(1,:), apsePoints(2,:), apsePoints(3,:), 'o--k', 'MarkerFaceColor', 'black', ...
     'DisplayName', 'Apse line')
