@@ -1,4 +1,4 @@
-function [r2, v2] = observation2state(R, rho, t, mu)
+function [r2, v2] = observation2state(R, rho, t, mu, iterativeImprovementOn)
 % returns state vector
 % R - observer's position vectors
 % rho - direction cosine vectors
@@ -44,6 +44,22 @@ g(3) = tau(3) - mu/r2Norm^3*tau(3)^3/6;
 % v2
 v2 = (f(1)*r(:,3)-f(3)*r(:,1))/(f(1)*g(3)-f(3)*g(1));
 r2 = r(:,2);
+
+if iterativeImprovementOn == true
+    iter = 0;
+    iterMax = 1000;
+    maxError = 1E-8;
+    error = [1,1,1];
+    fgNew = [f(1), f(3), g(1), g(3)];
+
+    while sum(error < maxError) ~= 3 && iter < iterMax
+    [r2, v2, newRhoNorm, fgNew] = refineStateMeasurement(r2, v2, tau, rho, R, D, D0, mu, fgNew);
+    error = abs(newRhoNorm - rhoNorm);
+    rhoNorm = newRhoNorm;
+    iter = iter + 1;
+    end
+
+end
 
 end
 
