@@ -28,10 +28,15 @@ classdef ISSClass < handle
             obj.orbitalElements = [h, inclination, RAofAscendingNode, eccentricity, perigeeArgument, 0];
         end
 
-        function [r,v] = getStateVector(obj, anomaly)
+        function stateVector = getStateVector(obj, anomaly)
             obj.orbitalElements(6) = anomaly;
             [r,v] = orbitalElements2state(obj.orbitalElements, obj.mu);
+            stateVector = [r,v];
             return
+        end
+
+        function orbitalElements = getOrbitalElements(obj)
+            orbitalElements = obj.orbitalElements;
         end
 
     end
