@@ -21,7 +21,7 @@ while abs(ratio) > error && iter <= maxIter
     S = StumpffS(z);
 
     F = r0*vr0/sqrt(mu)*x^2*C + (1 - a*r0)*x^3*S + r0*x - sqrt(mu)*dt;
-    dF = r0*vr0/sqrt(mu)*x(1 - a*x^2*S) + (1 - a*r0)*x^2*C + r0;
+    dF = r0*vr0/sqrt(mu)*x*(1 - a*x^2*S) + (1 - a*r0)*x^2*C + r0;
 
     ratio = F/dF;
 

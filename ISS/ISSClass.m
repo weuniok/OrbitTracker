@@ -2,6 +2,7 @@ classdef ISSClass < handle
 
     properties
         orbitalElements
+        state
         mu = 3.986004418E14 /1000^3;
     end
     
@@ -9,6 +10,7 @@ classdef ISSClass < handle
         function obj = ISSClass()
             secondLineTLE = [2 25544  51.6442 307.7584 0002851 188.8255 322.7546 15.50015618357355];
             obj.updateOrbitalElements(secondLineTLE);
+            obj.state = obj.getStateVector(obj.orbitalElements(6));
         end
 
         function updateOrbitalElements(obj, secondLineTLE)
@@ -28,6 +30,16 @@ classdef ISSClass < handle
             obj.orbitalElements = [h, inclination, RAofAscendingNode, eccentricity, perigeeArgument, 0];
         end
 
+        function plot(obj)
+            plotFromOE(obj.orbitalElements, obj.mu, obj.state(:,1));
+        end
+
+        %% set
+        function setAnomaly(obj, anomaly)
+            obj.orbitalElements(6) = anomaly;
+            obj.state = obj.getStateVector(obj.orbitalElements(6));
+        end
+        %% get
         function stateVector = getStateVector(obj, anomaly)
             obj.orbitalElements(6) = anomaly;
             [r,v] = orbitalElements2state(obj.orbitalElements, obj.mu);
@@ -37,6 +49,10 @@ classdef ISSClass < handle
 
         function orbitalElements = getOrbitalElements(obj)
             orbitalElements = obj.orbitalElements;
+        end
+
+        function mu = getMu(obj)
+            mu = obj.mu;
         end
 
     end

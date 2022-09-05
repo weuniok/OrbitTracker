@@ -1,6 +1,5 @@
-function timeSincePeriapsis = anomaly2time(anomaly, orbitalElements)
-% Compiles 3 state vectors and orbit's orbital elements into times of possible observations
-% states = [r1 v1; r2 v2; r3 v3]
+function timeSincePeriapsis = anomaly2time(anomaly, orbitalElements, mu)
+% Returns time since periapsis for true anomaly, orbit's OE and mu
 % orbitalElements:
 % (1) hNorm = specific angular momentum
 % (2) i = inclination
@@ -9,15 +8,17 @@ function timeSincePeriapsis = anomaly2time(anomaly, orbitalElements)
 % (5) w = perigee argument
 % (6) theta = true anomaly
 
+hNorm = orbitalElements(1);
 eNorm = orbitalElements(4);
 eFraction = (1-eNorm)/(1+eNorm);
 
 % eccentric anomaly
 E = 2*atan(sqrt(eFraction)*tan(anomaly/2));
-meanAnomaly = E - eNorm*sin(E);
-%
 
-timeSincePeriapsis = meanAnomaly/2/pi * orbitalPeriod;
+% mean anomaly
+meanAnomaly = E - eNorm*sin(E);
+
+timeSincePeriapsis = meanAnomaly * (hNorm/sqrt(1-eNorm^2))^3/mu^2; 
 
 end
 

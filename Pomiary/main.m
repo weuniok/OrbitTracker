@@ -1,21 +1,35 @@
 %% ISS model
 mu = 3.986004418E14 /1000^3;
+deg = pi/180;
 
 ISS = ISSClass();
-
 ISS_OE = ISS.getOrbitalElements;
-ISS_measure = ISS.getStateVector(0);
 
-measuredOE = state2orbitalElements(ISS_measure(:,1), ISS_measure(:,2), mu);
+anomalies = [-107, -104, -102].*deg;
+t = zeros(1, 3);
+ISS_rho = zeros(3, 3);
+rho = zeros(3, 3);
 
-error = ISS_OE - measuredOE;
+% TODO: find station position :( R
+% R = ones(3);
 
+for i = 1:3
+    t(i) = anomaly2time(anomalies(i), ISS_OE, mu);
 
-plotFromOE(ISS_OE, mu, ISS_measure(:,1));
-% hold on
-% plotFromOE(measuredOE, mu, ISS_measure(:,1));
+    currentRho = ISS.getStateVector(anomalies(i));
+    ISS_rho(:, i) = currentRho(:, 1);
 
+    rho(:, i) = position2dirCosine(ISS_rho(:, i), R(:,i));
+end
+t = t-t(1);
 
+[r,v] = observation2state(R, rho, t, mu, true);
+orbitalElements = state2orbitalElements(r, v, mu);
+% plotFromOE(orbitalElements, mu, r)
+plotFromOE(orbitalElements, mu, r)
+
+ISS.setAnomaly(anomalies(2));
+% ISS.plot();
 %% Testing observation Stellarium
 mu = 3.986004418E14 /1000^3;
 deg = pi/180;

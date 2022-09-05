@@ -40,7 +40,8 @@ Y = Y * earthR;
 Z = Z * earthR;
 surf(X,Y,Z, 'DisplayName', 'Earth'); 
 % Equatorial plane
-maxR = max(abs(R), [], 'all');
+% maxR = max(abs(R), [], 'all');
+maxR = max(abs(earthR*1.5), [], 'all');
 [x, y] = meshgrid(-maxR:maxR:maxR);
 z = zeros(size(x,1));
 surf(x,y,z, 'FaceAlpha', 0.2, 'DisplayName', 'Equatorial plane');
