@@ -22,13 +22,13 @@ b = -2*mu*B*(A+E);
 c = -mu^2*B^2;
 % roots
 r = roots([1, 0, a, 0, 0, b, 0, 0, c]);
-r2Norm = r(real(r)>0 & imag(r) == 0);
+r2Norm = r(real(r)>0 & imag(r) == 0 & r > 6370); % real solutions larger than Earth Radius
 
-if length(r) > 1
-    % TODO throw 
+if length(r2Norm) > 1
+    error("More than one solution to the 8th order polynomial calculated. Proceeding is not supported.")
 end
 
-% new rho
+% lengths of cosine directions
 rhoNorm(1) = 1/D0 * ( (6*(D(3,1)*tau(1)/tau(3) + D(2,1)*tau(2)/tau(3))*r2Norm^3  + mu*D(3,1)*(tau(2)^2-tau(1)^2)*tau(1)/tau(3) )...
     / (6*r2Norm^3 + mu*(tau(2)^2 - tau(3)^2)) - D(1,1) ) ;
 rhoNorm(2) = A + mu*B/r2Norm^3;
