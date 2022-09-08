@@ -23,7 +23,7 @@ z1 = alpha * x1^2;
 z3 = alpha * x3^2;
 
 f(1) = 1 - x1^2 / rNorm * StumpffC(z1);
-f(3) = 1 - x3^2 / rNorm * StumpffC(z1);
+f(3) = 1 - x3^2 / rNorm * StumpffC(z3);
 g(1) = tau(1) - 1/sqrt(mu) * x1^3 * StumpffS(z1);
 g(3) = tau(3) - 1/sqrt(mu) * x3^3 * StumpffS(z3);
 
