@@ -44,6 +44,11 @@ classdef ISSClass < handle
             plotFromOE(obj.orbitalElements, obj.mu, obj.state(:,1));
         end
 
+        function plotSinglePoint(obj)
+            name = sprintf("ISS - true anomaly %f deg", obj.orbitalElements(6)/pi*180);
+            plot3(obj.state(1,1), obj.state(2,1), obj.state(3,1), 'o', 'DisplayName', name);
+        end
+
         %% set
         function setAnomaly(obj, anomaly)
             obj.orbitalElements(6) = anomaly;
@@ -54,7 +59,6 @@ classdef ISSClass < handle
             obj.orbitalElements(6) = anomaly;
             [r,v] = orbitalElements2state(obj.orbitalElements, obj.mu);
             stateVector = [r,v];
-            return
         end
 
         function orbitalElements = getOrbitalElements(obj)

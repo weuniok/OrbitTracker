@@ -1,5 +1,5 @@
 function timeSincePeriapsis = anomaly2time(anomaly, orbitalElements, mu)
-% Returns time since periapsis for true anomaly, orbit's OE and mu
+% Returns time since periapsis for true anomaly and orbitalElements, 
 % orbitalElements:
 % (1) hNorm = specific angular momentum
 % (2) i = inclination
@@ -12,13 +12,23 @@ hNorm = orbitalElements(1);
 eNorm = orbitalElements(4);
 eFraction = (1-eNorm)/(1+eNorm);
 
+if anomaly > pi
+    full_orbits = floor(anomaly/pi);
+    anomaly = mod(anomaly, pi);
+else
+    full_orbits = 0;
+end
+
+
+% Period
+T = 2*pi/mu^2 * (hNorm/sqrt(1-eNorm^2))^3;
+
 % eccentric anomaly
 E = 2*atan(sqrt(eFraction)*tan(anomaly/2));
 
 % mean anomaly
 meanAnomaly = E - eNorm*sin(E);
-
-timeSincePeriapsis = meanAnomaly * (hNorm/sqrt(1-eNorm^2))^3/mu^2; 
+timeSincePeriapsis = meanAnomaly * T / 2 / pi + full_orbits*T/2;
 
 end
 
