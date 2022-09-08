@@ -3,14 +3,17 @@ classdef ISSClass < handle
     properties
         orbitalElements
         state
+        epochTLE
         mu = 3.986004418E14 /1000^3;
     end
     
     methods
         function obj = ISSClass()
-            secondLineTLE = [2 25544  51.6442 307.7584 0002851 188.8255 322.7546 15.50015618357355];
-            obj.updateOrbitalElements(secondLineTLE);
+            TLE_firstLine = {1 '25544U' '98067A'   22250.60379146  .00007699  00000-0  14232-3 0  9993};
+            TLE_secondLine = [2 25544  51.6443 288.2831 0002670 203.2971 293.6689 15.50084907357968];
+            obj.updateOrbitalElements(TLE_secondLine );
             obj.state = obj.getStateVector(obj.orbitalElements(6));
+            obj.epochTLE = obj.readEpoch(convertStringsToChars(string(TLE_firstLine{4})));
         end
 
         function updateOrbitalElements(obj, secondLineTLE)
@@ -28,6 +31,13 @@ classdef ISSClass < handle
             h = meanMotion * semiMajorAxis * semiMinorAxis;
 
             obj.orbitalElements = [h, inclination, RAofAscendingNode, eccentricity, perigeeArgument, 0];
+        end
+
+        function epochTLE = readEpoch(obj, epoch)
+            day = epoch(1:5);
+            epochTLE = ...
+                datetime(day, 'InputFormat', 'yyDDD') + ...
+                days(mod(str2double(epoch), 1));
         end
 
         function plot(obj)

@@ -1,4 +1,5 @@
 function rho = position2dirCosine(RObject, RObserver)
+% Returns observation direction cosine vectors for object and observer position vectors.
 % rho - direction cosine vector
 % RObject - position vector of the spaceship
 % RObserver - position vector of the observer

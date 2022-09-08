@@ -26,6 +26,10 @@ r2Norm = r(real(r)>0 & imag(r) == 0 & r > 6370); % real solutions larger than Ea
 
 if length(r2Norm) > 1
     error("More than one solution to the 8th order polynomial calculated. Proceeding is not supported.")
+else 
+    if isempty(r2Norm)
+        error("No solution found.");
+    end
 end
 
 % lengths of cosine directions

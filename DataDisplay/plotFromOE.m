@@ -68,6 +68,5 @@ grid on
 legend()
 % Initial state geo
 
-
-return
+hold off
 end
