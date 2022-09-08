@@ -12,13 +12,11 @@ hNorm = orbitalElements(1);
 eNorm = orbitalElements(4);
 eFraction = (1-eNorm)/(1+eNorm);
 
-if anomaly > pi
-    full_orbits = floor(anomaly/pi);
-    anomaly = mod(anomaly, pi);
-else
-    full_orbits = 0;
-end
-
+% if anomaly > pi
+%     full_orbits = floor(anomaly/pi);
+% else
+%     full_orbits = 0;
+% end
 
 % Period
 T = 2*pi/mu^2 * (hNorm/sqrt(1-eNorm^2))^3;
@@ -28,7 +26,12 @@ E = 2*atan(sqrt(eFraction)*tan(anomaly/2));
 
 % mean anomaly
 meanAnomaly = E - eNorm*sin(E);
-timeSincePeriapsis = meanAnomaly * T / 2 / pi + full_orbits*T/2;
+
+timeSincePeriapsis = meanAnomaly * T / 2 / pi;
+
+if anomaly > pi
+    timeSincePeriapsis = timeSincePeriapsis + T;
+end
 
 end
 
