@@ -22,7 +22,7 @@ b = -2*mu*B*(A+E);
 c = -mu^2*B^2;
 % roots
 r = roots([1, 0, a, 0, 0, b, 0, 0, c]);
-r2Norm = r(real(r)>0 & imag(r) == 0 & r > 6370); % real solutions larger than Earth Radius
+r2Norm = max(r(real(r)>0 & imag(r) == 0)); % real solutions larger than Earth Radius
 
 if length(r2Norm) > 1
     error("More than one solution to the 8th order polynomial calculated. Proceeding is not supported.")
