@@ -40,8 +40,8 @@ classdef ISSClass < handle
                 days(mod(str2double(epoch), 1));
         end
 
-        function plot(obj)
-            plotFromOE(obj.orbitalElements, obj.mu, obj.state(:,1));
+        function plot(obj, point_name, plotAdditional)
+            plotFromOE(obj.orbitalElements, obj.mu, obj.state(:,1), point_name, plotAdditional);
         end
 
         function plotSinglePoint(obj)

@@ -1,4 +1,4 @@
-function orbitPlot = plotFromOE(orbitalElements, mu, r)
+function orbitPlot = plotFromOE(orbitalElements, mu, r, name, plotAdditional)
 % plots the orbit from orbirtal elements vector
 % orbitalElements:
 % (1) hNorm = specific angular momentum
@@ -7,6 +7,8 @@ function orbitPlot = plotFromOE(orbitalElements, mu, r)
 % (4) eNorm = eccentricity
 % (5) w = perigee argument
 % (6) theta = true anomaly
+% name - name of plotted point
+% plotAdditional - true/false - should plot apse line and orbit?
 h = orbitalElements(1);
 i = orbitalElements(2);
 omega = orbitalElements(3);
@@ -32,33 +34,23 @@ R = rotation.' * R;
 
 %% plotting
 hold on
-% plotting Earth
-earthR = 6371; %km
-% [X,Y,Z] = sphere;
-% X = X * earthR;
-% Y = Y * earthR;
-% Z = Z * earthR;
-% surf(X,Y,Z, 'DisplayName', 'Earth'); 
-% Equatorial plane
-% maxR = max(abs(R), [], 'all');
-maxR = max(abs(earthR*1.5), [], 'all');
-[x, y] = meshgrid(-maxR:maxR:maxR);
-z = zeros(size(x,1));
-surf(x,y,z, 'FaceAlpha', 0.2, 'DisplayName', 'Equatorial plane');
-% plotting the orbit
-plot3(R(1,:), R(2,:), R(3,:), 'DisplayName', 'Orbit'); 
 
+
+% plotting the orbit
+plot3(R(1,:), R(2,:), R(3,:), 'DisplayName', strcat("Orbit ", name)); 
+
+if plotAdditional
+    
 % Apse line
 apsePoints = [ [rp*cos(0); 0; 0], [0; 0; 0], [ra*cos(pi); 0; 0] ];
 apsePoints = rotation.' * apsePoints;
 plot3(apsePoints(1,:), apsePoints(2,:), apsePoints(3,:), 'o--k', 'MarkerFaceColor', 'black', ...
     'DisplayName', 'Apse line')
 
-% Node line
-
+end
 
 % Initial state
-plot3(r(1), r(2), r(3), 'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Initial state')
+plot3(r(1), r(2), r(3), 'o', 'MarkerFaceColor', 'red', 'DisplayName', name)
 % Axes
 axis equal
 xlabel('x [km]')
@@ -68,5 +60,5 @@ grid on
 legend()
 % Initial state geo
 
-hold off
+
 end

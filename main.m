@@ -8,30 +8,22 @@ Re = 6378; % Earth Radius
 f = 0.003353; % Earth oblateness
 %% ISS model
 % Values from the web
-TLE_first_line = {1 '25544U' '98067A'   22250.60379146  .00007699  00000-0  14232-3 0  9993};
-TLE_second_line = [2 25544  51.6443 288.2831 0002670 203.2971 293.6689 15.50084907357968];
+TLE_first_line = {1 '25544U' '98067A' 22353.42711160  .00011227  00000-0  20403-3 0  9992};
+TLE_second_line = [2 25544  51.6432 138.9346 0003592 174.7295 234.7524 15.50052736373915];
 
 ISS = ISSClass(TLE_first_line, TLE_second_line);
 ISS_OE = ISS.getOrbitalElements;
 %% Observer's data
-phi = deg*(51 + 13/60 + 12.72/60/60); % geodetic longtitude east
-lambda = deg*(13 + 33/60); % latitude
-H = 0; % [m] local altitude
-%% Test cases data
+phi = deg*(51 + 13/60 + 15.49/3600); % geodetic longtitude east
+lambda = deg*(18 + 34/60 + 10.70/3600); % latitude
+H = 165; % [m] local altitude
+%% Generated test data
 cla
 
-% anomalies_sets = ...
-%     [254 256 258;
-%     254 256 258;
-%     254 256 258].*deg;
-
 improvement = true; % iterative improvement
-% central_anomaly = 256;
-% danomaly = 105;
-% anomalies_sets = [central_anomaly-danomaly central_anomaly central_anomaly+danomaly].*deg;
 
-central_anomaly = 266;
-danomaly = 103; %
+central_anomaly = 312;
+danomaly = 5; %
 anomalies_sets = [central_anomaly-danomaly central_anomaly central_anomaly+danomaly].*deg;
 
 %%= Test cases solving
@@ -48,7 +40,7 @@ for test_case = 1:height(anomalies_sets)
     % Observer's position vector at each observation
     %     R = findStationPosition(phi, theta, Re, f, H);
     %     R = ones(3)*100;
-    first_obs_time = datetime("1-Sep-2022 00:00:00");
+    first_obs_time = datetime("19-Dec-2022 9:30:00");
 
     % Time and direction cosines of each observation
     for i = 1:3
@@ -61,7 +53,7 @@ for test_case = 1:height(anomalies_sets)
         rho(:, i) = position2dirCosine(ISS_position, R(:,i));
 
         ISS.setAnomaly(anomalies(i));
-        ISS.plot();
+        ISS.plot(sprintf("Observation %d", i), i==2);
 
 
     end
@@ -73,9 +65,11 @@ for test_case = 1:height(anomalies_sets)
 
     % Plots
     %     cla
-    plotFromOE(orbitalElements, mu, r);
+    hold on
+    plotEarth();
+    plotFromOE(orbitalElements, mu, r, "Calculated position", true);
     ISS.setAnomaly(anomalies(2));
-    %     ISS.plot();
+    %         ISS.plot();
     hold on
     %     plot3(R(1,3), R(2,3), R(3,3), 'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Observer')
     plot3(R(1,2), R(2,2), R(3,2), 'o', 'MarkerFaceColor', 'blue', 'DisplayName', 'Observer')
@@ -95,37 +89,36 @@ end
 
 %% Stellarium test case
 cla
-clc
+improvement = true;
 
-rReal = [3704; 2109; 5283];
-vReal = [-4.53; 6.14; 0.72];
+real_R = [-2854, -3102, 5320; ...
+          -2127, -3692, 5284; ...
+          -1317, -4237, 5136]';
 
-t = [54*60, 56*60+50, 58*60+33]; % time [seconds]
-alfa = deg*([...
-    20+58/60+11.81/3600; ...
-    1+39/60+12.08/3600; ...
-    7+15/60+37.05/3600]/24*360); % right ascension [deg]
-delta = deg*([...
-    5+6/60+8.5/3600; ...
-    52+4/60+6.3/3600; ...
-    26+39/60+12.4/3600]); % declination [deg]
+real_V = [-2854, -3102, 5320; ...
+          -2127, -3692, 5284; ...
+          -1317, -4237, 5136]';
+
+ISS.setAnomaly(deg*(-78+16/60+7.4/3600));
+t = [52*60+24, 54*60+26, 56*60+35]; % time [seconds]
+
 theta = deg*[...
-    1+57/60+3.1/3600; ...
-    1+59/60+53.6/3600;...
-    2+1/60+37.3/3600]/24*360; % local (mean) sidereal time [deg]
-% theta = deg*[...
-%     1+57/60+2.4/3600; ...
-%     1+59/60+52.9/3600;...
-%     2+1/60+36.5/3600]/24*360; % apparent sidereal time [deg]
+    15+28/60+27.1/3600; ...
+    16+00/60+29.8/3600;...
+    16+02/60+39.0/3600]/24*360; % local (mean) sidereal time [deg]
 
-phi = deg*(51+13/60+12.72/60/60); % geodetic latitude
+phi = deg*(51+23/60+15.49/60/60); % geodetic latitude
 
 R = findStationPosition(phi, theta, Re, f, H);
-rho = angles2directionCosines(alfa, delta);
+
+rho = zeros(3,3);
+for i=1:3
+rho(:, i) = position2dirCosine(real_R(:,i), R(:,i));
+end
+
 
 [r,v] = observation2state(R, rho, t, mu, true);
 orbitalElements = state2orbitalElements(r, v, mu);
-plotFromOE(orbitalElements, mu, r)
 
 % Data display
 measuredValues = [norm(r), norm(v), orbitalElements];
@@ -134,8 +127,20 @@ displayData("Measured", measuredValues);
 displayData("True", trueValues);
 displayData("Error [measured-true]", measuredValues-trueValues);
 
-% ISS.plot();
-% hold on
-%     plot3(R(1,3), R(2,3), R(3,3), 'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Observer')
-%     plot3(R(1,2), R(2,2), R(3,2), 'o', 'MarkerFaceColor', 'blue', 'DisplayName', 'Observer')
-%     plot3(R(1,1), R(2,1), R(3,1), 'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Observer')
+% Plots
+hold on
+plotEarth();
+
+plotFromOE(orbitalElements, mu, r, 'Calculated position', false)
+
+hold on
+ISS.plot("Observation", true);
+
+plot3(R(1,2), R(2,2), R(3,2), 'o', 'MarkerFaceColor', 'blue', 'DisplayName', 'Observer')
+
+plot3(real_R(1,3), real_R(2,3), real_R(3,3), ...
+    'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Station 1')
+plot3(real_R(1,2), real_R(2,2), real_R(3,2), ...
+    'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Station 2')
+plot3(real_R(1,1), real_R(2,1), real_R(3,1), ...
+    'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Station 3')
