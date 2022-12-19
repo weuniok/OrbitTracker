@@ -1,4 +1,4 @@
-function orbitPlot = plotFromOE (orbitalElements, mu, r)
+function orbitPlot = plotFromOE(orbitalElements, mu, r)
 % plots the orbit from orbirtal elements vector
 % orbitalElements:
 % (1) hNorm = specific angular momentum
@@ -34,11 +34,11 @@ R = rotation.' * R;
 hold on
 % plotting Earth
 earthR = 6371; %km
-[X,Y,Z] = sphere;
-X = X * earthR;
-Y = Y * earthR;
-Z = Z * earthR;
-surf(X,Y,Z, 'DisplayName', 'Earth'); 
+% [X,Y,Z] = sphere;
+% X = X * earthR;
+% Y = Y * earthR;
+% Z = Z * earthR;
+% surf(X,Y,Z, 'DisplayName', 'Earth'); 
 % Equatorial plane
 % maxR = max(abs(R), [], 'all');
 maxR = max(abs(earthR*1.5), [], 'all');

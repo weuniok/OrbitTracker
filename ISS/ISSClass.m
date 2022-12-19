@@ -8,23 +8,23 @@ classdef ISSClass < handle
     end
     
     methods
-        function obj = ISSClass()
-            TLE_firstLine = {1 '25544U' '98067A'   22250.60379146  .00007699  00000-0  14232-3 0  9993};
-            TLE_secondLine = [2 25544  51.6443 288.2831 0002670 203.2971 293.6689 15.50084907357968];
-            obj.updateOrbitalElements(TLE_secondLine );
+        function obj = ISSClass(TLE_first_line, TLE_second_line)
+%             TLE_first_line = {1 '25544U' '98067A'   22250.60379146  .00007699  00000-0  14232-3 0  9993};
+%             TLE_second_line = [2 25544  51.6443 288.2831 0002670 203.2971 293.6689 15.50084907357968];
+            obj.updateOrbitalElements(TLE_second_line );
             obj.state = obj.getStateVector(obj.orbitalElements(6));
-            obj.epochTLE = obj.readEpoch(convertStringsToChars(string(TLE_firstLine{4})));
+            obj.epochTLE = obj.readEpoch(convertStringsToChars(string(TLE_first_line{4})));
         end
 
-        function updateOrbitalElements(obj, secondLineTLE)
+        function updateOrbitalElements(obj, TLE_second_line)
             deg = pi/180;
 
-            inclination = secondLineTLE(3) * deg;
-            RAofAscendingNode = secondLineTLE(4) * deg;
-            eccentricity = secondLineTLE(5) * 10E-8;
-            perigeeArgument = secondLineTLE(6) * deg;
+            inclination = TLE_second_line(3) * deg;
+            RAofAscendingNode = TLE_second_line(4) * deg;
+            eccentricity = TLE_second_line(5) * 10E-8;
+            perigeeArgument = TLE_second_line(6) * deg;
 
-            meanMotion = secondLineTLE(8) * 2*pi/24/60/60; % revolutions/day -> rad/s
+            meanMotion = TLE_second_line(8) * 2*pi/24/60/60; % revolutions/day -> rad/s
 
             semiMajorAxis = (obj.mu / meanMotion^2)^(1/3);
             semiMinorAxis = semiMajorAxis * (1-eccentricity^2)^0.5;
