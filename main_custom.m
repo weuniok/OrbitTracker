@@ -16,18 +16,23 @@ ISS_OE = ISS.getOrbitalElements;
 %% Observer's data
 phi = deg*(51 + 13/60 + 15.49/3600); % geodetic longtitude east
 lambda = deg*(18 + 34/60 + 10.70/3600); % latitude
-H = 165; % [m] local altitude
+H = 153; % [m] local altitude
 %% Generated test data
 cla
 
 improvement = true; % iterative improvement
 
 central_anomaly = 312;
-danomaly = 5; %
-anomalies_sets = [central_anomaly-danomaly central_anomaly central_anomaly+danomaly].*deg;
+danomaly = [5, 15, 82]; %
+anomalies_sets = ...
+    [central_anomaly-danomaly(1) central_anomaly central_anomaly+danomaly(1); ...
+    central_anomaly-danomaly(2) central_anomaly central_anomaly+danomaly(2); ...
+    central_anomaly-danomaly(3) central_anomaly central_anomaly+danomaly(3)].*deg;
 
 %%= Test cases solving
 for test_case = 1:height(anomalies_sets)
+clf
+
     anomalies = anomalies_sets(test_case, :);
 
     % Memory allocation
@@ -53,7 +58,9 @@ for test_case = 1:height(anomalies_sets)
         rho(:, i) = position2dirCosine(ISS_position, R(:,i));
 
         ISS.setAnomaly(anomalies(i));
+%         if i == 2
         ISS.plot(sprintf("Observation %d", i), i==2);
+%         end
 
 
     end
@@ -63,84 +70,25 @@ for test_case = 1:height(anomalies_sets)
     [r,v] = observation2state(R, rho, t, mu, improvement);
     orbitalElements = state2orbitalElements(r, v, mu);
 
+    %% Displays
     % Plots
     %     cla
     hold on
+    axis equal
     plotEarth();
     plotFromOE(orbitalElements, mu, r, "Calculated position", true);
     ISS.setAnomaly(anomalies(2));
     %         ISS.plot();
     hold on
-    %     plot3(R(1,3), R(2,3), R(3,3), 'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Observer')
+%     plot3(R(1,3), R(2,3), R(3,3), 'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Observer')
     plot3(R(1,2), R(2,2), R(3,2), 'o', 'MarkerFaceColor', 'blue', 'DisplayName', 'Observer')
-    %     plot3(R(1,1), R(2,1), R(3,1), 'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Observer')
+%     plot3(R(1,1), R(2,1), R(3,1), 'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Observer')
 
     % Data display
     measuredValues = [norm(r), norm(v), orbitalElements];
     trueValues = [vecnorm(ISS.state), ISS.orbitalElements];
-    displayData("Measured", measuredValues);
-    displayData("True", trueValues);
-    displayData("Error [measured-true]", measuredValues-trueValues);
+    displayData("Measured", convertOE(measuredValues));
+    displayData("True", convertOE(trueValues));
+    displayData("Error [measured-true]", (convertOE(measuredValues)-(convertOE(trueValues))));
 
-    if height(anomalies_sets) > 1
-        pause;
-    end
 end
-
-%% Stellarium test case
-cla
-improvement = true;
-
-real_R = [-2854, -3102, 5320; ...
-          -2127, -3692, 5284; ...
-          -1317, -4237, 5136]';
-
-real_V = [-2854, -3102, 5320; ...
-          -2127, -3692, 5284; ...
-          -1317, -4237, 5136]';
-
-ISS.setAnomaly(deg*(-78+16/60+7.4/3600));
-t = [52*60+24, 54*60+26, 56*60+35]; % time [seconds]
-
-theta = deg*[...
-    15+28/60+27.1/3600; ...
-    16+00/60+29.8/3600;...
-    16+02/60+39.0/3600]/24*360; % local (mean) sidereal time [deg]
-
-phi = deg*(51+23/60+15.49/60/60); % geodetic latitude
-
-R = findStationPosition(phi, theta, Re, f, H);
-
-rho = zeros(3,3);
-for i=1:3
-rho(:, i) = position2dirCosine(real_R(:,i), R(:,i));
-end
-
-
-[r,v] = observation2state(R, rho, t, mu, true);
-orbitalElements = state2orbitalElements(r, v, mu);
-
-% Data display
-measuredValues = [norm(r), norm(v), orbitalElements];
-trueValues = [vecnorm(ISS.state), ISS.orbitalElements];
-displayData("Measured", measuredValues);
-displayData("True", trueValues);
-displayData("Error [measured-true]", measuredValues-trueValues);
-
-% Plots
-hold on
-plotEarth();
-
-plotFromOE(orbitalElements, mu, r, 'Calculated position', false)
-
-hold on
-ISS.plot("Observation", true);
-
-plot3(R(1,2), R(2,2), R(3,2), 'o', 'MarkerFaceColor', 'blue', 'DisplayName', 'Observer')
-
-plot3(real_R(1,3), real_R(2,3), real_R(3,3), ...
-    'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Station 1')
-plot3(real_R(1,2), real_R(2,2), real_R(3,2), ...
-    'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Station 2')
-plot3(real_R(1,1), real_R(2,1), real_R(3,1), ...
-    'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Station 3')

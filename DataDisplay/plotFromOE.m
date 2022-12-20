@@ -35,29 +35,38 @@ R = rotation.' * R;
 %% plotting
 hold on
 
+if name == "Calculated position"
+    plotstyle = 'b--';
+    dotcolor = "green";
+else
+    dotcolor = "red";
+    plotstyle = 'r-';
+end
 
-% plotting the orbit
-plot3(R(1,:), R(2,:), R(3,:), 'DisplayName', strcat("Orbit ", name)); 
 
 if plotAdditional
-    
-% Apse line
-apsePoints = [ [rp*cos(0); 0; 0], [0; 0; 0], [ra*cos(pi); 0; 0] ];
-apsePoints = rotation.' * apsePoints;
-plot3(apsePoints(1,:), apsePoints(2,:), apsePoints(3,:), 'o--k', 'MarkerFaceColor', 'black', ...
-    'DisplayName', 'Apse line')
+    % plotting the orbit
+
+    plot3(R(1,:), R(2,:), R(3,:), plotstyle, 'DisplayName', strcat("Orbit ", name), 'LineWidth', 1);
+
+
+
+    % % Apse line
+    % apsePoints = [ [rp*cos(0); 0; 0], [0; 0; 0], [ra*cos(pi); 0; 0] ];
+    % apsePoints = rotation.' * apsePoints;
+    % plot3(apsePoints(1,:), apsePoints(2,:), apsePoints(3,:), 'o--k', 'MarkerFaceColor', 'black', ...
+    %     'DisplayName', 'Apse line')
 
 end
 
 % Initial state
-plot3(r(1), r(2), r(3), 'o', 'MarkerFaceColor', 'red', 'DisplayName', name)
+plot3(r(1), r(2), r(3), 'o', 'MarkerFaceColor', dotcolor, 'DisplayName', name)
 % Axes
 axis equal
 xlabel('x [km]')
 ylabel('y [km]')
 zlabel('z [km]')
-grid on
-legend()
+
 % Initial state geo
 
 

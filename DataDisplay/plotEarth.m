@@ -14,8 +14,10 @@ surf(X,Y,Z, 'DisplayName', 'Earth', 'FaceAlpha', 0.1, 'EdgeAlpha', 0.3);
 maxR = max(abs(earthR*1.5), [], 'all');
 [x, y] = meshgrid(-maxR:maxR:maxR);
 z = zeros(size(x,1));
-surf(x,y,z, 'FaceAlpha', 0.2, 'DisplayName', 'Equatorial plane');
+surf(x,y,z, 'FaceAlpha', 0.2, 'DisplayName', 'Equatorial plane', 'FaceAlpha', 0.05);
 
+grid on
+legend()
 
 end
 
