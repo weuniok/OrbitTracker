@@ -1,4 +1,5 @@
 function C = StumpffC(z)
+%STUMPFFC calculates Stumpff C coefficient
 
 if z > 0
     C = (1 - cos(sqrt(z))) / z;

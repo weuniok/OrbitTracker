@@ -1,4 +1,5 @@
 function S = StumpffS(z)
+%STUMPFFS calculates Stumpff C coefficient
 
 if z > 0
     S = (sqrt(z) - sin(sqrt(z))) / (sqrt(z))^3;

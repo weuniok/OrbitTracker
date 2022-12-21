@@ -1,5 +1,5 @@
 function orbitPlot = plotFromOE(orbitalElements, mu, r, name, plotAdditional)
-% plots the orbit from orbirtal elements vector
+%PLOTFROMOE plots the orbit from orbirtal elements vector
 % orbitalElements:
 % (1) hNorm = specific angular momentum
 % (2) i = inclination

@@ -1,5 +1,5 @@
 function timeSincePeriapsis = anomaly2time(anomaly, orbitalElements, mu)
-% Returns time since periapsis for true anomaly and orbitalElements, 
+%ANOMALY2TIME Returns time since periapsis for true anomaly and orbitalElements
 % orbitalElements:
 % (1) hNorm = specific angular momentum
 % (2) i = inclination

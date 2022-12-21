@@ -1,4 +1,5 @@
 function R = findStationPosition(phi, theta, Re, f, H)
+%FINDSTATIONPOSITION converts from geocentral coordinates to cartesian (ECI)
 % phi = geodetic latitude
 % theta = local sidereal time
 % Re = equatorial radius

@@ -1,4 +1,5 @@
 classdef ISSClass < handle
+    %ISSCLASS simulates ISS state based on TLE
 
     properties
         orbitalElements

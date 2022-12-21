@@ -1,5 +1,5 @@
 function theta = date2siderealTime(date, longtitudeEast)
-%DATE2SIDEREALTIME retrns local sidereal time 
+%DATE2SIDEREALTIME retrns local sidereal time at date for longtitude
 % date - datetime object
 % longtitudeEast - [rad]
 deg = pi/180;

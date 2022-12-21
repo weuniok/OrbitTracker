@@ -1,6 +1,5 @@
 function [r,v] = orbitalElements2state(orbitalElements, mu)
-
-% plots the orbit from orbirtal elements vector
+%ORBITALELEMENTS2STATE converts orbital elements to orbital state
 % orbitalElements:
 % (1) hNorm = specific angular momentum
 % (2) i = inclination
