@@ -31,7 +31,7 @@ anomalies_sets = ...
 
 %%= Test cases solving
 for test_case = 1:height(anomalies_sets)
-clf
+    clf
 
     anomalies = anomalies_sets(test_case, :);
 
@@ -58,9 +58,9 @@ clf
         rho(:, i) = position2dirCosine(ISS_position, R(:,i));
 
         ISS.setAnomaly(anomalies(i));
-%         if i == 2
+        %         if i == 2
         ISS.plot(sprintf("Observation %d", i), i==2);
-%         end
+        %         end
 
 
     end
@@ -80,9 +80,9 @@ clf
     ISS.setAnomaly(anomalies(2));
     %         ISS.plot();
     hold on
-%     plot3(R(1,3), R(2,3), R(3,3), 'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Observer')
+    %     plot3(R(1,3), R(2,3), R(3,3), 'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Observer')
     plot3(R(1,2), R(2,2), R(3,2), 'o', 'MarkerFaceColor', 'blue', 'DisplayName', 'Observer')
-%     plot3(R(1,1), R(2,1), R(3,1), 'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Observer')
+    %     plot3(R(1,1), R(2,1), R(3,1), 'o', 'MarkerFaceColor', 'red', 'DisplayName', 'Observer')
 
     % Data display
     measuredValues = [norm(r), norm(v), orbitalElements];
