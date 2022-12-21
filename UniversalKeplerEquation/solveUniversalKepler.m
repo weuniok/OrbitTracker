@@ -1,7 +1,7 @@
 function x = solveUniversalKepler(dt, r0, vr0, a, mu)
 %SOLVEUNIVERSALKEPLER Solves universal Kepler equation
-% dt 
-% r0 - radial position 
+% dt
+% r0 - radial position
 % vr0 - radial velocity
 % a - reciprocal of semimajor axis
 % mu - gravitational parameter

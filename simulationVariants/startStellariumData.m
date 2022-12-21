@@ -30,13 +30,13 @@ R = findStationPosition(phi, theta, Re, f, H);
 t = [52*60+24, 54*60+26, 56*60+35]; % time [seconds]
 
 real_R = [-2854, -3102, 5320; ...
-          -2127, -3692, 5284; ...
-          -1317, -4237, 5136]';
+    -2127, -3692, 5284; ...
+    -1317, -4237, 5136]';
 real_R_norm = vecnorm(real_R(:, 2));
 
 real_V = [5.74, -5.08, 0.12; ...
-          6.13, -4.55, -0.71; ...
-          6.41,-3.90, -1.57]';
+    6.13, -4.55, -0.71; ...
+    6.41,-3.90, -1.57]';
 real_V_norm = vecnorm(real_V(:, 2));
 
 real_state_vector = [real_R_norm, real_V_norm];
@@ -45,7 +45,7 @@ ISS.setAnomaly(deg*(-78+16/60+7.4/3600));
 
 rho = zeros(3,3);
 for i=1:3
-rho(:, i) = position2dirCosine(real_R(:,i), R(:,i));
+    rho(:, i) = position2dirCosine(real_R(:,i), R(:,i));
 end
 
 [r,v] = observation2state(R, rho, t, mu, improvement);

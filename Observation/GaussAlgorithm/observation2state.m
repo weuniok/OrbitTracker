@@ -17,7 +17,7 @@ B = 1/6/D0 * (D(1,2)*(tau(3)^2-tau(2)^2)*tau(3)/tau(2) + D(3,2)*(tau(2)^2-tau(1)
 % E
 E = dot(R(:,2), rho(:,2));
 % abc coefficients
-a = -(A^2+2*A*E+dot(R(:,2), R(:,2))); 
+a = -(A^2+2*A*E+dot(R(:,2), R(:,2)));
 b = -2*mu*B*(A+E);
 c = -mu^2*B^2;
 % roots
@@ -26,7 +26,7 @@ r2Norm = max(r(real(r)>0 & imag(r) == 0)); % real solutions larger than Earth Ra
 
 if length(r2Norm) > 1
     error("More than one solution to the 8th order polynomial calculated. Proceeding is not supported.")
-else 
+else
     if isempty(r2Norm)
         error("No solution found.");
     end
@@ -59,10 +59,10 @@ if iterativeImprovementOn == true
     fgNew = [f(1), f(3), g(1), g(3)];
 
     while sum(error < maxError) ~= 3 && iter < iterMax
-    [r2, v2, newRhoNorm, fgNew] = refineStateMeasurement(r2, v2, tau, rho, R, D, D0, mu, fgNew);
-    error = abs(newRhoNorm - rhoNorm);
-    rhoNorm = newRhoNorm;
-    iter = iter + 1;
+        [r2, v2, newRhoNorm, fgNew] = refineStateMeasurement(r2, v2, tau, rho, R, D, D0, mu, fgNew);
+        error = abs(newRhoNorm - rhoNorm);
+        rhoNorm = newRhoNorm;
+        iter = iter + 1;
     end
 
 end
