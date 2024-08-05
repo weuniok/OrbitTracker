@@ -1,0 +1,167 @@
+%-----------------------------------------------
+%  Engineer's & Master's Thesis Template
+%  Copyleft by Artur M. Brodzki & Piotr Woźniak
+%  Warsaw University of Technology, 2019-2022
+%-----------------------------------------------
+
+\documentclass[
+    bindingoffset=5mm,  % Binding offset
+    footnoteindent=3mm, % Footnote indent
+    hyphenation=true    % Hyphenation turn on/off
+]{src/wut-thesis}
+
+\graphicspath{{tex/img/}} % Katalog z obrazkami.
+\addbibresource{bibliografia.bib} % Plik .bib z bibliografią
+\graphicspath{{img/}}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{gensymb}
+\usepackage{subfig}
+\usepackage{placeins}
+\usepackage{listings}
+\usepackage{matlab-prettifier}
+\usepackage{accsupp}
+
+% idk what it is
+\usepackage[T1]{fontenc}
+\usepackage{bigfoot} % to allow verbatim in footnote
+
+
+\usepackage{color} %red, green, blue, yellow, cyan, magenta, black, white
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+
+\lstset{language=Matlab,%
+    basicstyle=\footnotesize\ttfamily, % Default font
+    % numbers=left,              % Location of line numbers
+    numberstyle=\tiny,          % Style of line numbers
+    % stepnumber=2,              % Margin between line numbers
+    numbersep=5pt,              % Margin between line numbers and text
+    tabsize=2,                  % Size of tabs
+    extendedchars=true,
+    breaklines=true,            % Lines will be wrapped
+    keywordstyle=\color{red},
+    frame=b,
+    %basicstyle=\color{red},
+    breaklines=true,%
+    morekeywords={matlab2tikz},
+    keywordstyle=\color{blue},%
+    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+    identifierstyle=\color{black},%
+    stringstyle=\color{mylilas},
+    commentstyle=\color{mygreen},%
+    showstringspaces=false,%without this there will be a symbol in the places where there is a space
+    numbers=left,%
+    numberstyle={\tiny \color{black}},% size of the numbers
+    numbersep=9pt, % this defines how far the numbers are from the text
+    emph=[2]{classdef},emphstyle=[2]\color{mylilas},
+    emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
+    %emph=[2]{word1,word2}, emphstyle=[2]{style},    
+    stepnumber  = 5, % Line numbers go in steps of 5
+    breaklines  = true,
+    breakatwhitespace   = false,
+    prebreak= \space,
+    postbreak   = \space
+}
+% idk what it is
+
+
+%-------------------------------------------------------------
+% Wybór wydziału:
+%  \facultyeiti: Wydział Elektroniki i Technik Informacyjnych
+%  \facultymeil: Wydział Mechaniczny Energetyki i Lotnictwa
+% --
+% Rodzaj pracy: \EngineerThesis, \MasterThesis
+% --
+% Wybór języka: \langpol, \langeng
+%-------------------------------------------------------------
+\facultymeil    % Wydział Elektroniki i Technik Informacyjnych
+\EngineerThesis % Praca inżynierska
+\langpol % Praca w języku polskim
+
+\begin{document}
+
+%------------------
+% Strona tytułowa
+%------------------
+\instytut{Instytut Techniki Lotniczej i Mechaniki Stosowanej}
+\kierunek{Lotnictwo i Kosmonautyka}
+\specjalnosc{Automatyka i Systemy Pokładowe}
+\title{
+    Wyznaczanie orbity statku kosmicznego na podstawie obserwacji naziemnych
+}
+% Title in English for English theses
+% In English theses, you may remove this command
+\engtitle{
+    Unnecessarily long and complicated thesis' title \\
+    difficult to read, understand and pronounce
+}
+% Title in Polish for English theses
+% Use it only in English theses
+\poltitle{
+    Niepotrzebnie długi i skomplikowany tytuł pracy \\
+    trudny do przeczytania, zrozumienia i wymówienia
+}
+\author{Paweł Pietrzak}
+\album{304263}
+\opiekun{mgr inż. Mateusz Sochacki}
+\date{\the\year}
+\maketitle
+
+%-------------------------------------
+% Streszczenie po polsku dla \langpol
+% English abstract if \langeng is set
+
+% Polish abstract if \langeng is set
+%----------------------------------------
+
+
+\pagestyle{plain}
+
+%--------------
+% Spis treści
+%--------------
+\cleardoublepage % Zaczynamy od nieparzystej strony
+\tableofcontents
+
+%------------
+% Rozdziały
+%------------
+\cleardoublepage % Zaczynamy od nieparzystej strony
+\pagestyle{headings}
+
+\input{tex/1-wstep}         % Wygodnie jest trzymać każdy rozdział w osobnym pliku.
+\input{tex/2-cel}
+\input{tex/3-orbita-wygen}
+\input{tex/5-podsumowanie} 
+
+
+% Umożliwia to również łatwą migrację do nowej wersji szablonu:
+ % zazwyczaj wystarczy podmienić plik src/wut-thesis.cls
+
+ % Można też pisać rozdziały w jednym pliku.
+
+%--------------------------------------------
+% Literatura
+%--------------------------------------------
+\cleardoublepage % Zaczynamy od nieparzystej strony
+\printbibliography
+
+%--------------------------------------------
+% Spisy (opcjonalne)
+%--------------------------------------------
+\newpage
+\pagestyle{plain}
+
+\listoffigurestoc     % Spis rysunków.
+\vspace{1cm}          % vertical space
+\listoftablestoc      % Spis tabel.
+
+
+\input{tex/6-kod} 
+
+% Używając powyższych spisów jako szablonu,
+% możesz tu dodać swój własny wykaz bądź listę,
+% np. spis algorytmów.
+
+\end{document} % Dobranoc.
